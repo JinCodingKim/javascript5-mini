@@ -1,29 +1,43 @@
-import React, { Component } from 'react';
-import './App.css';
-import axios from 'axios';
+import React, { Component } from "react";
+import "./App.css";
+import axios from "axios";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cars: []
-    }
+    };
+
+    this.getCars = this.getCars.bind(this);
   }
 
   getCars() {
-    axios.get('https://joes-autos.herokuapp.com/api/vehicles')
-    .then(res => {
+    axios.get("https://joes-autos.herokuapp.com/api/vehicles").then(res => {
+      console.log(res.data);
       this.setState({
-        cars: res
-      })
-    })
+        cars: res.data
+      });
+    });
   }
 
   render() {
+    const carList = this.state.cars.map(car => {
+      return (
+        <div key={car.id}>
+          <p>Make: {car.make}</p>
+          <p>Model: {car.model}</p>
+          <p>Year: {car.year}</p>
+          <p>Color: {car.color}</p>
+          <p>Price: {car.price}</p>
+          <br />
+        </div>
+      );
+    });
     return (
       <div className="App">
         <button onClick={this.getCars}>Get cars</button>
-        {this.state.cars}
+        {carList}
       </div>
     );
   }
